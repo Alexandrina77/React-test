@@ -4,30 +4,20 @@ import style from "./form.module.css"
 import axios from "axios";
 import emailjs from '@emailjs/browser';
 
+
 export default function Form(){
 
 
-    function sendEmail(e){
-        e.preventDefault();    //This is important, i'm not sure why, but the email won't send without it
-  
-        emailjs.sendForm('service_id', 'template_jw7rnw7', e.target, '57OaggYsI74w4VYw7')
-          .then((result) => {
-           alert({result}) //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior) 
-          }, (error) => {
-              console.log(error.text);
-          });
-        }
-
 
     const { register, handleSubmit, formState:{errors} } = useForm();
-    const onSubmit = (data,e) => {
+    const onSubmit = (data) => {
         axios.post(`https://637f91ca2f8f56e28e904e7d.mockapi.io/form`, data)
         alert("Заявка отправлена")
     }
 
     return(
         <div className={style.form}>
-            <form id="form" onSubmit={handleSubmit(onSubmit) && sendEmail}>
+            <form id="form" onSubmit={handleSubmit(onSubmit)}>
             <h1>Заполните заявку на обратный звонок</h1>
             <div>
                 <div className="input-group mb-3"> 
@@ -37,7 +27,7 @@ export default function Form(){
                             maxLength: 50,
                             pattern: /^[А-Яа-я]+$/i  
                         })}
-                        name="lastname"
+                        
                      type="text"
                      className="form-control"
                      placeholder="Фамилия"
@@ -100,7 +90,7 @@ export default function Form(){
                      type="text"
                      className="form-control"
                      placeholder="Email"
-                     name="email"
+                   
                     />
                 </div>
                 {errors?.email?.type === "required" &&(
@@ -119,3 +109,4 @@ export default function Form(){
             </form>
         </div>
     )
+}
